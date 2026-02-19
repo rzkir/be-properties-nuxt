@@ -22,6 +22,8 @@ import { createPropertiesTypeRouter } from "@/routes/propertiesType.js";
 
 import { createPropertiesLocationRouter } from "@/routes/propertiesLocation.js";
 
+import { createPropertiesBadgeRouter } from "@/routes/propertiesBadge.js";
+
 const env = loadEnv(process.env);
 
 getFirebaseAdminApp({
@@ -59,6 +61,7 @@ app.use(createUploadRouter({ apiSecret: env.API_SECRET }));
 app.use(createImagekitRouter({ privateKey: env.IMAGEKIT_PRIVATE_KEY }));
 app.use("/properties-type", createPropertiesTypeRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
 app.use("/properties-location", createPropertiesLocationRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
+app.use("/properties-badge", createPropertiesBadgeRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
 
 app.listen(env.PORT, () => {
   console.log(`[BE] listening on http://localhost:${env.PORT}`);
