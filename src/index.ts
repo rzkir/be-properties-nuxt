@@ -28,6 +28,8 @@ import { createPropertiesLocationRouter } from "./routes/propertiesLocation.js";
 
 import { createPropertiesBadgeRouter } from "./routes/propertiesBadge.js";
 
+import { createPropertiesRouter } from "./routes/properties.js";
+
 const env = loadEnv(process.env);
 
 getFirebaseAdminApp({
@@ -76,6 +78,7 @@ app.use(createImagekitRouter({ privateKey: env.IMAGEKIT_PRIVATE_KEY }));
 app.use("/properties-type", createPropertiesTypeRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
 app.use("/properties-location", createPropertiesLocationRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
 app.use("/properties-badge", createPropertiesBadgeRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
+app.use("/properties", createPropertiesRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
 
 // Only start server if not in Vercel environment
 if (process.env.VERCEL !== "1") {
