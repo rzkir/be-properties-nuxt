@@ -1,0 +1,11 @@
+services:
+  api:
+    build: .
+    container_name: properties-be
+    ports:
+      - "3003:3003"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
