@@ -1,9 +1,22 @@
 import "dotenv/config";
+import { register } from "tsconfig-paths";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 import type { Express } from "express";
 
-// Import from dist folder after build (no .d.ts for compiled output)
-// @ts-expect-error - dist/index.js is compiled output, no declaration file
-const appModule = (await import("../dist/index.js")) as { default: Express };
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Register path aliases BEFORE importing app
+register({
+  baseUrl: resolve(__dirname, "../src"),
+  paths: {
+    "@/*": ["*"],
+  },
+});
+
+// Import from src - Vercel will compile TypeScript automatically with @vercel/node
+const appModule = (await import("../src/index")) as { default: Express };
 const app = appModule.default;
 
 export default app;
