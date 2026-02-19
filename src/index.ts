@@ -4,6 +4,10 @@ import express from "express";
 
 import cors from "cors";
 
+import { fileURLToPath } from "url";
+
+import { dirname, join } from "path";
+
 import { loadEnv } from "./env.js";
 
 import { getFirebaseAdminApp } from "./firebase.js";
@@ -45,6 +49,16 @@ app.use(
 );
 
 app.use(express.json({ limit: "1mb" }));
+
+// Serve static files from public directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use(express.static(join(__dirname, "../public")));
+
+// Serve documentation HTML
+app.get("/docs", (_req, res) => {
+  res.sendFile(join(__dirname, "../public/index.html"));
+});
 
 app.use(healthRouter);
 app.use(
