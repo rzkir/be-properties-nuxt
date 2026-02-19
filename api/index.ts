@@ -14,9 +14,9 @@ register({
   },
 });
 
-// Use top-level await to ensure register happens before import
-// This ensures tsconfig-paths is registered before src/index.ts imports are resolved
-const appModule = await import("../src/index");
+// Import using relative path - Vercel will compile TypeScript automatically
+// Use .js extension because TypeScript compiles to .js
+const appModule = await import("../src/index.js");
 const app = appModule.default;
 
 export default app;
