@@ -4,9 +4,9 @@ import admin from "firebase-admin";
 
 import { z } from "zod";
 
-import { firebaseAuthPost } from "@/firebaseAuthRest.js";
+import { firebaseAuthPost } from "../firebaseAuthRest";
 
-import { requireSessionAuth, getUser } from "@/middleware/sessionAuth.js";
+import { requireSessionAuth, getUser } from "../middleware/sessionAuth";
 
 export function createAuthRouter(opts: {
   firebaseApiKey: string;

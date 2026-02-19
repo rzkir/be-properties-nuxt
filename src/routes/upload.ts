@@ -4,9 +4,9 @@ import multer from "multer";
 
 import { z } from "zod";
 
-import { requireApiSecret } from "@/middleware/apiSecret.js";
+import { requireApiSecret } from "../middleware/apiSecret";
 
-import imagekit from "@/imgkit.js";
+import imagekit from "../imgkit";
 
 export function createUploadRouter(opts: {
   apiSecret?: string;

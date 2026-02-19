@@ -4,25 +4,25 @@ import express from "express";
 
 import cors from "cors";
 
-import { loadEnv } from "@/env.js";
+import { loadEnv } from "./env";
 
-import { getFirebaseAdminApp } from "@/firebase.js";
+import { getFirebaseAdminApp } from "./firebase";
 
-import { healthRouter } from "@/routes/health.js";
+import { healthRouter } from "./routes/health";
 
-import { createAccountsRouter } from "@/routes/accounts.js";
+import { createAccountsRouter } from "./routes/accounts";
 
-import { createUploadRouter } from "@/routes/upload.js";
+import { createUploadRouter } from "./routes/upload";
 
-import { createAuthRouter } from "@/routes/auth.js";
+import { createAuthRouter } from "./routes/auth";
 
-import { createImagekitRouter } from "@/routes/imagekit.js";
+import { createImagekitRouter } from "./routes/imagekit";
 
-import { createPropertiesTypeRouter } from "@/routes/propertiesType.js";
+import { createPropertiesTypeRouter } from "./routes/propertiesType";
 
-import { createPropertiesLocationRouter } from "@/routes/propertiesLocation.js";
+import { createPropertiesLocationRouter } from "./routes/propertiesLocation";
 
-import { createPropertiesBadgeRouter } from "@/routes/propertiesBadge.js";
+import { createPropertiesBadgeRouter } from "./routes/propertiesBadge";
 
 const env = loadEnv(process.env);
 
