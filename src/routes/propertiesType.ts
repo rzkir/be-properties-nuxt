@@ -11,13 +11,13 @@ export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) 
 
   const CreateSchema = z.object({
     name: z.string().trim().min(1).max(100),
-    propertiesId: z.string().trim().min(1).optional(),
+    propertiesTypeId: z.string().trim().min(1).optional(),
     isActive: z.boolean().optional().default(true),
   });
 
   const UpdateSchema = z.object({
     name: z.string().trim().min(1).max(100).optional(),
-    propertiesId: z.string().trim().min(1).optional(),
+    propertiesTypeId: z.string().trim().min(1).optional(),
     isActive: z.boolean().optional(),
   });
 

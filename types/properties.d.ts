@@ -1,7 +1,7 @@
 interface Property {
     id: number;
     title: string;
-    propertiesId: string;
+    propertiesTypeId: string;
     type: propertyType;
     price: number;
     image: string;

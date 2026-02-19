@@ -35,7 +35,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
 
   const PropertyTypeSchema = z.object({
     name: z.string().trim().min(1),
-    propertiesId: z.string().trim().min(1),
+    propertiesTypeId: z.string().trim().min(1),
   });
 
   const PropertyBadgeSchema = z.object({
@@ -43,8 +43,27 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
     badgesId: z.string().trim().min(1),
   });
 
+  const AuthorSchema = z.object({
+    displayName: z.string().trim(),
+    email: z.string().trim(),
+    phoneNumber: z.string().trim(),
+    photoURL: z.string().trim().optional(),
+  });
+
+  // Helper function to generate slug from title
+  function generateSlug(title: string): string {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+  }
+
   const CreateSchema = z.object({
     title: z.string().trim().min(1).max(200),
+    slug: z.string().trim().min(1).optional(),
     location: PropertyLocSchema,
     type: PropertyTypeSchema,
     badges: z.array(PropertyBadgeSchema).optional().default([]),
@@ -56,11 +75,13 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
     area: z.string().trim().min(1),
     price: z.string().trim().min(1),
     priceValue: z.number().positive("Price value must be positive"),
-    propertiesId: z.string().trim().min(1).optional(),
+    propertiesTypeId: z.string().trim().min(1).optional(),
+    status: z.enum(['draft', 'published', 'archived']).optional().default('draft'),
   });
 
   const UpdateSchema = z.object({
     title: z.string().trim().min(1).max(200).optional(),
+    slug: z.string().trim().min(1).optional(),
     location: PropertyLocSchema.optional(),
     type: PropertyTypeSchema.optional(),
     badges: z.array(PropertyBadgeSchema).optional(),
@@ -72,7 +93,9 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
     area: z.string().trim().min(1).optional(),
     price: z.string().trim().min(1).optional(),
     priceValue: z.number().positive().optional(),
-    propertiesId: z.string().trim().min(1).optional(),
+    propertiesTypeId: z.string().trim().min(1).optional(),
+    status: z.enum(['draft', 'published', 'archived']).optional(),
+    author: AuthorSchema.optional(), // Diterima tapi tidak di-update (tetap pakai yang lama)
   });
 
   function propertiesCollection() {
@@ -214,13 +237,28 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
     },
   );
 
+  // Helper: build author from Firebase user
+  async function buildAuthorFromUid(uid: string) {
+    try {
+      const userRecord = await admin.auth().getUser(uid);
+      return {
+        displayName: userRecord.displayName ?? "",
+        email: userRecord.email ?? "",
+        phoneNumber: userRecord.phoneNumber ?? "",
+        photoURL: userRecord.photoURL ?? undefined,
+      };
+    } catch {
+      return null;
+    }
+  }
+
   // POST /properties - Create new property
   router.post(
     "/",
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
-        const user = getUser(req);
+        const authUser = getUser(req);
         const parsed = CreateSchema.safeParse(req.body);
 
         if (!parsed.success) {
@@ -231,11 +269,19 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
         }
 
         const now = admin.firestore.Timestamp.now();
+        // Auto-generate slug from title if not provided
+        const slug = parsed.data.slug || generateSlug(parsed.data.title);
+
+        // Author dari user yang login (Firebase Auth)
+        const author = await buildAuthorFromUid(authUser.uid);
+
         const data = {
           ...parsed.data,
+          slug,
+          ...(author && { author }),
           createdAt: now,
           updatedAt: now,
-          createdBy: user.uid,
+          createdBy: authUser.uid,
         };
 
         const docRef = await propertiesCollection().add(data);
@@ -276,8 +322,16 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
         }
 
         const now = admin.firestore.Timestamp.now();
+        // Auto-generate slug from title if title is updated and slug is not provided
+        let slug = parsed.data.slug;
+        if (parsed.data.title && !parsed.data.slug) {
+          slug = generateSlug(parsed.data.title);
+        }
+        // Jangan update author - tetap pakai yang sudah ada
+        const { author: _author, ...restParsed } = parsed.data as Record<string, unknown>;
         const updateData = {
-          ...parsed.data,
+          ...restParsed,
+          ...(slug && { slug }),
           updatedAt: now,
         };
 
