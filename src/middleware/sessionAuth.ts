@@ -20,11 +20,22 @@ function readCookie(req: { headers?: Record<string, string | string[] | undefine
 
 export function requireSessionAuth(cookieName: string): RequestHandler {
   return async (req, res, next) => {
+    const cookieHeader = req.headers?.cookie;
     const cookie =
       (req as any).cookies?.[cookieName] ??
       readCookie(req as any, cookieName);
 
-    if (!cookie) return res.status(401).json({ message: "Missing session cookie" });
+    // Debug logging
+    console.log("[sessionAuth] Cookie header:", cookieHeader ? "present" : "missing");
+    console.log("[sessionAuth] Parsed cookie:", cookie ? "found" : "not found");
+    console.log("[sessionAuth] Cookie name:", cookieName);
+    console.log("[sessionAuth] Origin:", req.headers.origin);
+    console.log("[sessionAuth] Referer:", req.headers.referer);
+
+    if (!cookie) {
+      console.error("[sessionAuth] Missing session cookie. Cookie header:", cookieHeader);
+      return res.status(401).json({ message: "Missing session cookie" });
+    }
 
     try {
       const decoded = await admin.auth().verifySessionCookie(cookie, true);

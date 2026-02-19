@@ -19,7 +19,7 @@ export function createAuthRouter(opts: {
   const cookieOptions = {
     httpOnly: true,
     secure: opts.cookieSecure,
-    sameSite: "lax" as const,
+    sameSite: (opts.cookieSecure ? "none" : "lax") as "none" | "lax",
     path: "/",
   };
 
