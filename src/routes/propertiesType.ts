@@ -4,7 +4,7 @@ import admin from "firebase-admin";
 
 import { z } from "zod";
 
-import { requireAuth, getUser } from "../middleware/auth";
+import { requireAuth, getUser } from "../middleware/auth.js";
 
 export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) {
   const router = Router();
