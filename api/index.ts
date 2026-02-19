@@ -16,7 +16,8 @@ register({
 });
 
 // Import from src - Vercel will compile TypeScript automatically with @vercel/node
-const appModule = (await import("../src/index")) as { default: Express };
+// Note: ES modules require .js extension even for TypeScript files
+const appModule = (await import("../src/index.js")) as { default: Express };
 const app = appModule.default;
 
 export default app;
