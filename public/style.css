@@ -1,0 +1,79 @@
+:root {
+    --accent: #2dd4bf;
+    --bg-main: #0f172a;
+    --bg-sidebar: #020617;
+    --bg-card: #1e293b;
+}
+
+body {
+    font-family: 'Satoshi', sans-serif;
+    background-color: var(--bg-main);
+    color: #e2e8f0;
+}
+
+.font-display {
+    font-family: 'General Sans', sans-serif;
+}
+
+.sidebar-link:hover {
+    background: rgba(45, 212, 191, 0.1);
+    color: var(--accent);
+}
+
+.sidebar-link.active {
+    border-right: 2px solid var(--accent);
+    color: var(--accent);
+    background: rgba(45, 212, 191, 0.05);
+}
+
+.code-block {
+    background-color: #0b1120;
+    border: 1px solid #334155;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #020617;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}
+
+.endpoint-method {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: monospace;
+}
+
+.method-get { background: #10b981; color: white; }
+.method-post { background: #3b82f6; color: white; }
+.method-patch { background: #f59e0b; color: white; }
+.method-delete { background: #ef4444; color: white; }
+
+@media (max-width: 1023px) {
+    .sidebar-mobile-hidden {
+        transform: translateX(-100%);
+    }
+    .sidebar-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+.sidebar-overlay {
+    transition: opacity 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+    .sidebar-mobile-hidden {
+        transform: translateX(0) !important;
+    }
+}

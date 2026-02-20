@@ -1,0 +1,47 @@
+<!-- Sidebar -->
+<aside id="sidebar" class="fixed left-0 top-0 h-screen w-72 bg-slate-950 border-r border-slate-800 flex flex-col z-50 transition-transform duration-300 ease-in-out sidebar-mobile-hidden">
+    <div class="p-6 sm:p-8 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center">
+                <iconify-icon icon="lucide:home" class="text-slate-950 text-2xl"></iconify-icon>
+            </div>
+            <span class="text-lg sm:text-xl font-bold font-display tracking-tight text-white">Properties<span class="text-teal-400">API</span></span>
+        </div>
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors">
+            <iconify-icon icon="lucide:x" class="text-xl text-white"></iconify-icon>
+        </button>
+    </div>
+
+    <nav class="flex-1 px-3 sm:px-4 overflow-y-auto custom-scrollbar space-y-6 sm:space-y-8 py-4">
+        <div>
+            <h3 class="px-3 sm:px-4 text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3 sm:mb-4">Pendahuluan</h3>
+            <ul class="space-y-1">
+                <li><a href="#welcome" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base">Memulai</a></li>
+                <li><a href="#authentication" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base">Autentikasi</a></li>
+                <li><a href="#rate-limiting" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base">Rate Limiting</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="px-3 sm:px-4 text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3 sm:mb-4">Endpoints</h3>
+            <ul class="space-y-1">
+                <li><a href="#endpoint-health" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:heart" class="text-sm"></iconify-icon> Health</a></li>
+                <li><a href="#endpoint-auth" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:lock" class="text-sm"></iconify-icon> Authentication</a></li>
+                <li><a href="#endpoint-accounts" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:user" class="text-sm"></iconify-icon> Accounts</a></li>
+                <li><a href="#endpoint-upload" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:upload" class="text-sm"></iconify-icon> Upload</a></li>
+                <li><a href="#endpoint-imagekit" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:image" class="text-sm"></iconify-icon> ImageKit</a></li>
+                <li><a href="#endpoint-properties" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:building" class="text-sm"></iconify-icon> Properties</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="p-4 sm:p-6 border-t border-slate-800">
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+            <p class="text-xs text-slate-400 mb-2">Status API</p>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-sm font-medium text-white">All systems functional</span>
+            </div>
+        </div>
+    </div>
+</aside>

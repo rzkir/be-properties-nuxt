@@ -7,127 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&f[]=general-sans@200,500,300,600,400,700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent: #2dd4bf;
-            --bg-main: #0f172a;
-            --bg-sidebar: #020617;
-            --bg-card: #1e293b;
-        }
-        body {
-            font-family: 'Satoshi', sans-serif;
-            background-color: var(--bg-main);
-            color: #e2e8f0;
-        }
-        .font-display {
-            font-family: 'General Sans', sans-serif;
-        }
-        .sidebar-link:hover {
-            background: rgba(45, 212, 191, 0.1);
-            color: var(--accent);
-        }
-        .sidebar-link.active {
-            border-right: 2px solid var(--accent);
-            color: var(--accent);
-            background: rgba(45, 212, 191, 0.05);
-        }
-        .code-block {
-            background-color: #0b1120;
-            border: 1px solid #334155;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #020617;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 10px;
-        }
-        .endpoint-method {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            font-family: monospace;
-        }
-        .method-get { background: #10b981; color: white; }
-        .method-post { background: #3b82f6; color: white; }
-        .method-patch { background: #f59e0b; color: white; }
-        .method-delete { background: #ef4444; color: white; }
-        @media (max-width: 1023px) {
-            .sidebar-mobile-hidden {
-                transform: translateX(-100%);
-            }
-            .sidebar-overlay.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
-        }
-        .sidebar-overlay {
-            transition: opacity 0.3s ease;
-        }
-        @media (min-width: 1024px) {
-            .sidebar-mobile-hidden {
-                transform: translateX(0) !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <!-- Mobile Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay hidden fixed inset-0 bg-black/50 z-40 lg:hidden" onclick="toggleSidebar()"></div>
     
     <div class="flex min-h-screen bg-slate-900">
-        <!-- Sidebar -->
-        <aside id="sidebar" class="fixed left-0 top-0 h-screen w-72 bg-slate-950 border-r border-slate-800 flex flex-col z-50 transition-transform duration-300 ease-in-out sidebar-mobile-hidden">
-            <div class="p-6 sm:p-8 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center">
-                        <iconify-icon icon="lucide:home" class="text-slate-950 text-2xl"></iconify-icon>
-                    </div>
-                    <span class="text-lg sm:text-xl font-bold font-display tracking-tight text-white">Properties<span class="text-teal-400">API</span></span>
-                </div>
-                <button onclick="toggleSidebar()" class="lg:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors">
-                    <iconify-icon icon="lucide:x" class="text-xl text-white"></iconify-icon>
-                </button>
-            </div>
-
-            <nav class="flex-1 px-3 sm:px-4 overflow-y-auto custom-scrollbar space-y-6 sm:space-y-8 py-4">
-                <div>
-                    <h3 class="px-3 sm:px-4 text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3 sm:mb-4">Pendahuluan</h3>
-                    <ul class="space-y-1">
-                        <li><a href="#welcome" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all active text-sm sm:text-base">Memulai</a></li>
-                        <li><a href="#authentication" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base">Autentikasi</a></li>
-                        <li><a href="#rate-limiting" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base">Rate Limiting</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="px-3 sm:px-4 text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3 sm:mb-4">Endpoints</h3>
-                    <ul class="space-y-1">
-                        <li><a href="#endpoint-health" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:heart" class="text-sm"></iconify-icon> Health</a></li>
-                        <li><a href="#endpoint-auth" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:lock" class="text-sm"></iconify-icon> Authentication</a></li>
-                        <li><a href="#endpoint-accounts" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:user" class="text-sm"></iconify-icon> Accounts</a></li>
-                        <li><a href="#endpoint-upload" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:upload" class="text-sm"></iconify-icon> Upload</a></li>
-                        <li><a href="#endpoint-imagekit" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:image" class="text-sm"></iconify-icon> ImageKit</a></li>
-                        <li><a href="#endpoint-properties" class="sidebar-link flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base"><iconify-icon icon="lucide:building" class="text-sm"></iconify-icon> Properties</a></li>
-                    </ul>
-                </div>
-            </nav>
-
-            <div class="p-4 sm:p-6 border-t border-slate-800">
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                    <p class="text-xs text-slate-400 mb-2">Status API</p>
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <span class="text-sm font-medium text-white">All systems functional</span>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        <!-- Sidebar loaded from sidebar.html -->
+        <div id="sidebar-container"></div>
 
         <!-- Main Content -->
         <main class="lg:ml-72 flex-1 relative w-full">
@@ -236,7 +124,12 @@
 }'</span>
                                     </pre>
                                     <div class="mt-6 pt-6 border-t border-slate-800/50">
-                                        <p class="text-slate-500 text-xs mb-3 uppercase tracking-widest">Response</p>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <p class="text-slate-500 text-xs uppercase tracking-widest">Response</p>
+                                            <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                                <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                            </button>
+                                        </div>
                                         <pre class="text-emerald-400">
 {
   <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
@@ -298,6 +191,12 @@
                         <p class="text-xs text-slate-500 mb-3">Dokumentasi ini dilayani di <code class="bg-slate-950 px-1 rounded text-teal-400">GET /docs</code>.</p>
                         
                         <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                            <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                <span class="text-xs text-slate-400">cURL</span>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
                                 <pre class="text-slate-300 overflow-x-auto">
 <span class="text-teal-400">curl</span> <span class="text-amber-300">https://your-api-domain.com/health</span>
@@ -306,7 +205,12 @@
                         </div>
 
                         <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
-                            <p class="text-xs text-slate-500 uppercase mb-2">Response</p>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
 {
   <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
@@ -344,6 +248,12 @@
                         </div>
 
                         <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                            <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                <span class="text-xs text-slate-400">cURL</span>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
                                 <pre class="text-slate-300 overflow-x-auto">
 <span class="text-teal-400">curl</span> --request POST \
@@ -355,7 +265,12 @@
                         </div>
 
                         <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
-                            <p class="text-xs text-slate-500 uppercase mb-2">Response</p>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
 {
   <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
@@ -387,32 +302,181 @@
                         </div>
                     </div>
 
-                    <!-- Other Auth Endpoints -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <div class="bg-slate-800/50 p-3 sm:p-4 rounded-xl border border-slate-800">
+                    <!-- Logout -->
+                    <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800 mb-4 sm:mb-6">
+                        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                             <span class="endpoint-method method-post">POST</span>
-                            <code class="text-white font-mono text-xs sm:text-sm break-all block mt-1">/auth/logout</code>
-                            <p class="text-slate-400 text-xs sm:text-sm mt-2">Logout dan hapus session cookie. Memerlukan autentikasi.</p>
+                            <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/auth/logout</code>
                         </div>
-                        <div class="bg-slate-800/50 p-3 sm:p-4 rounded-xl border border-slate-800">
+                        <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Logout dan hapus session cookie. Memerlukan autentikasi.</p>
+                        
+                        <div class="mb-3 sm:mb-4">
+                            <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body:</p>
+                            <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                <pre class="text-emerald-400 text-xs sm:text-sm">
+{} <span class="text-slate-600">// empty body</span>
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
+}
+                            </pre>
+                        </div>
+                    </div>
+
+                    <!-- Get Me -->
+                    <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800 mb-4 sm:mb-6">
+                        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                             <span class="endpoint-method method-get">GET</span>
-                            <code class="text-white font-mono text-xs sm:text-sm break-all block mt-1">/auth/me</code>
-                            <p class="text-slate-400 text-xs sm:text-sm mt-2">Mendapatkan informasi user yang sedang login. Memerlukan autentikasi.</p>
+                            <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/auth/me</code>
                         </div>
-                        <div class="bg-slate-800/50 p-3 sm:p-4 rounded-xl border border-slate-800">
+                        <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan informasi user yang sedang login. Memerlukan autentikasi.</p>
+                        
+                        <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                            <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                <span class="text-xs text-slate-400">cURL</span>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/auth/me'</span>
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"uid"</span>: <span class="text-amber-300">"user123"</span>,
+    <span class="text-slate-400">"email"</span>: <span class="text-amber-300">"user@example.com"</span>,
+    <span class="text-slate-400">"displayName"</span>: <span class="text-amber-300">"John Doe"</span>,
+    <span class="text-slate-400">"role"</span>: <span class="text-amber-300">"user"</span>
+  }
+}
+                            </pre>
+                        </div>
+                    </div>
+
+                    <!-- Reset Password -->
+                    <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800 mb-4 sm:mb-6">
+                        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                             <span class="endpoint-method method-post">POST</span>
-                            <code class="text-white font-mono text-xs sm:text-sm break-all block mt-1">/auth/reset-password</code>
-                            <p class="text-slate-400 text-xs sm:text-sm mt-2">Mengirim email reset password.</p>
+                            <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/auth/reset-password</code>
                         </div>
-                        <div class="bg-slate-800/50 p-3 sm:p-4 rounded-xl border border-slate-800">
+                        <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mengirim email reset password.</p>
+                        
+                        <div class="mb-3 sm:mb-4">
+                            <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body:</p>
+                            <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"email"</span>: <span class="text-amber-300">"user@example.com"</span>
+}
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
+}
+                            </pre>
+                        </div>
+                    </div>
+
+                    <!-- Change Password -->
+                    <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800 mb-4 sm:mb-6">
+                        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                             <span class="endpoint-method method-post">POST</span>
-                            <code class="text-white font-mono text-xs sm:text-sm break-all block mt-1">/auth/change-password</code>
-                            <p class="text-slate-400 text-xs sm:text-sm mt-2">Mengubah password. Memerlukan autentikasi.</p>
+                            <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/auth/change-password</code>
                         </div>
-                        <div class="bg-slate-800/50 p-3 sm:p-4 rounded-xl border border-slate-800">
+                        <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mengubah password. Memerlukan autentikasi.</p>
+                        
+                        <div class="mb-3 sm:mb-4">
+                            <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body:</p>
+                            <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"oldPassword"</span>: <span class="text-amber-300">"oldpassword123"</span>,
+  <span class="text-slate-400">"newPassword"</span>: <span class="text-amber-300">"newpassword123"</span>
+}
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
+}
+                            </pre>
+                        </div>
+                    </div>
+
+                    <!-- Delete Account -->
+                    <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800 mb-4 sm:mb-6">
+                        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                             <span class="endpoint-method method-delete">DELETE</span>
-                            <code class="text-white font-mono text-xs sm:text-sm break-all block mt-1">/auth/delete-account</code>
-                            <p class="text-slate-400 text-xs sm:text-sm mt-2">Menghapus akun pengguna (Firestore + Firebase Auth). Memerlukan autentikasi.</p>
+                            <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/auth/delete-account</code>
+                        </div>
+                        <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Menghapus akun pengguna (Firestore + Firebase Auth). Memerlukan autentikasi.</p>
+                        
+                        <div class="mb-3 sm:mb-4">
+                            <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body:</p>
+                            <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"password"</span>: <span class="text-amber-300">"password123"</span> <span class="text-slate-600">// untuk konfirmasi</span>
+}
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
+}
+                            </pre>
                         </div>
                     </div>
                 </section>
@@ -431,8 +495,28 @@
                         </div>
                         <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan data akun pengguna yang sedang login. Memerlukan autentikasi.</p>
                         
+                        <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                            <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                <span class="text-xs text-slate-400">cURL</span>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/me'</span>
+                                </pre>
+                            </div>
+                        </div>
+
                         <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
-                            <p class="text-xs text-slate-500 uppercase mb-2">Response</p>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
 {
   <span class="text-slate-400">"data"</span>: {
@@ -479,8 +563,30 @@
                                 <pre class="text-emerald-400 text-xs sm:text-sm"><span class="text-slate-400">x-api-secret</span>: <span class="text-amber-300">your-api-secret</span></pre>
                             </div>
                         </div>
+
+                        <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                            <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                <span class="text-xs text-slate-400">cURL</span>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/accounts'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                </pre>
+                            </div>
+                        </div>
+
                         <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
-                            <p class="text-xs text-slate-500 uppercase mb-2">Response</p>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
 {
   <span class="text-slate-400">"data"</span>: [
@@ -525,6 +631,12 @@
                         </div>
 
                         <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                            <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                <span class="text-xs text-slate-400">cURL</span>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
                                 <pre class="text-slate-300 overflow-x-auto">
 <span class="text-teal-400">curl</span> --request POST \
@@ -536,7 +648,12 @@
                         </div>
 
                         <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
-                            <p class="text-xs text-slate-500 uppercase mb-2">Response</p>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
 {
   <span class="text-slate-400">"url"</span>: <span class="text-amber-300">"https://ik.imagekit.io/..."</span>,
@@ -563,8 +680,28 @@
                         </div>
                         <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan token autentikasi untuk ImageKit client-side upload.</p>
                         
+                        <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                            <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                <span class="text-xs text-slate-400">cURL</span>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
+                            <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/imagekit/auth'</span>
+                                </pre>
+                            </div>
+                        </div>
+
                         <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
-                            <p class="text-xs text-slate-500 uppercase mb-2">Response</p>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-500 uppercase">Response</p>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                    <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                </button>
+                            </div>
                             <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
 {
   <span class="text-slate-400">"token"</span>: <span class="text-amber-300">"abc123..."</span>,
@@ -589,67 +726,491 @@
                         <!-- Properties (Main CRUD) -->
                         <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800">
                             <h3 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Properties (Properti Utama)</h3>
-                            <div class="space-y-3 sm:space-y-4">
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-post">POST</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/upload/thumbnail</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Upload thumbnail gambar ke ImageKit. Multipart <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">file</code>. Maks 5MB. Butuh x-api-secret + auth.</p>
+                            
+                            <!-- Upload Thumbnail -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-post">POST</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties/upload/thumbnail</code>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-post">POST</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/upload/image</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Upload gambar properti ke ImageKit. Multipart <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">file</code>. Maks 5MB. Butuh x-api-secret + auth.</p>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Daftar properti (paginated). Query: <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">page</code> (optional). Response: data, page, limit, nextPage, prevPage.</p>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/search</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Cari properti. Query: <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">q</code> (wajib), <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">page</code> (optional).</p>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/:id</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Detail satu properti berdasarkan ID.</p>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-post">POST</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Buat properti baru. Body: title, slug (optional), location { name, locationsId }, type { name, propertiesTypeId }, badges (optional), content, thumbnailUrl, imageUrl (optional), bedrooms, bathrooms, area, price, priceValue, propertiesTypeId (optional), status (optional: draft|published|archived).</p>
-                                    <div class="bg-slate-950 p-2 sm:p-3 rounded-lg mt-2 overflow-x-auto">
-                                        <pre class="text-emerald-400 text-xs">
-{ <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Rumah Minimalis"</span>, <span class="text-slate-400">"location"</span>: { <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta"</span>, <span class="text-slate-400">"locationsId"</span>: <span class="text-amber-300">"id"</span> }, <span class="text-slate-400">"type"</span>: { <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>, <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"id"</span> }, <span class="text-slate-400">"content"</span>: <span class="text-amber-300">"..."</span>, <span class="text-slate-400">"thumbnailUrl"</span>, <span class="text-slate-400">"bedrooms"</span>, <span class="text-slate-400">"bathrooms"</span>, <span class="text-slate-400">"area"</span>, <span class="text-slate-400">"price"</span>, <span class="text-slate-400">"priceValue"</span> }
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Upload thumbnail gambar ke ImageKit. Multipart file. Maksimal 5MB. Memerlukan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code> dan autentikasi.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Headers:</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+<span class="text-slate-400">x-api-secret</span>: <span class="text-amber-300">your-api-secret</span>
                                         </pre>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-patch">PATCH</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/:id</code>
+
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Update properti. Semua field optional (title, location, type, badges, content, thumbnailUrl, imageUrl, bedrooms, bathrooms, area, price, priceValue, status).</p>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request POST \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties/upload/thumbnail'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span> \
+  --form <span class="text-amber-300">'file=@/path/to/thumbnail.jpg'</span>
+                                        </pre>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-delete">DELETE</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/:id</code>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Hapus properti.</p>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"url"</span>: <span class="text-amber-300">"https://ik.imagekit.io/..."</span>,
+  <span class="text-slate-400">"path"</span>: <span class="text-amber-300">"properties/thumbnails/1234567890-thumbnail.jpg"</span>,
+  <span class="text-slate-400">"contentType"</span>: <span class="text-amber-300">"image/jpeg"</span>,
+  <span class="text-slate-400">"size"</span>: <span class="text-teal-400">123456</span>
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- Upload Image -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-post">POST</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties/upload/image</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Upload gambar properti ke ImageKit. Multipart file. Maksimal 5MB. Memerlukan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code> dan autentikasi.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Headers:</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+<span class="text-slate-400">x-api-secret</span>: <span class="text-amber-300">your-api-secret</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request POST \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties/upload/image'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span> \
+  --form <span class="text-amber-300">'file=@/path/to/image.jpg'</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"url"</span>: <span class="text-amber-300">"https://ik.imagekit.io/..."</span>,
+  <span class="text-slate-400">"path"</span>: <span class="text-amber-300">"properties/images/1234567890-image.jpg"</span>,
+  <span class="text-slate-400">"contentType"</span>: <span class="text-amber-300">"image/jpeg"</span>,
+  <span class="text-slate-400">"size"</span>: <span class="text-teal-400">123456</span>
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- GET Properties List -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Daftar properti (paginated). Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Query Parameters (optional):</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+<span class="text-slate-400">page</span>=<span class="text-amber-300">1</span> <span class="text-slate-600">// default: 1</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties?page=1'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: [
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"prop001"</span>,
+      <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Rumah Minimalis Modern"</span>,
+      <span class="text-slate-400">"slug"</span>: <span class="text-amber-300">"rumah-minimalis-modern"</span>,
+      <span class="text-slate-400">"location"</span>: {
+        <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan"</span>,
+        <span class="text-slate-400">"locationsId"</span>: <span class="text-amber-300">"loc001"</span>
+      },
+      <span class="text-slate-400">"type"</span>: {
+        <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>,
+        <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"type001"</span>
+      },
+      <span class="text-slate-400">"badges"</span>: [<span class="text-amber-300">"New"</span>, <span class="text-amber-300">"Featured"</span>],
+      <span class="text-slate-400">"thumbnailUrl"</span>: <span class="text-amber-300">"https://ik.imagekit.io/.../thumbnail1.jpg"</span>,
+      <span class="text-slate-400">"imageUrl"</span>: [
+        <span class="text-amber-300">"https://ik.imagekit.io/.../image1.jpg"</span>,
+        <span class="text-amber-300">"https://ik.imagekit.io/.../image2.jpg"</span>
+      ],
+      <span class="text-slate-400">"bedrooms"</span>: <span class="text-teal-400">3</span>,
+      <span class="text-slate-400">"bathrooms"</span>: <span class="text-teal-400">2</span>,
+      <span class="text-slate-400">"area"</span>: <span class="text-teal-400">150</span>,
+      <span class="text-slate-400">"price"</span>: <span class="text-amber-300">"Rp 500.000.000"</span>,
+      <span class="text-slate-400">"priceValue"</span>: <span class="text-teal-400">500000000</span>,
+      <span class="text-slate-400">"status"</span>: <span class="text-amber-300">"published"</span>,
+      <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-02-15T10:30:00Z"</span>,
+      <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-20T14:20:00Z"</span>
+    },
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"prop002"</span>,
+      <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Apartemen Luxurious"</span>,
+      <span class="text-slate-400">"slug"</span>: <span class="text-amber-300">"apartemen-luxurious"</span>,
+      <span class="text-slate-400">"location"</span>: {
+        <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Pusat"</span>,
+        <span class="text-slate-400">"locationsId"</span>: <span class="text-amber-300">"loc002"</span>
+      },
+      <span class="text-slate-400">"type"</span>: {
+        <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Apartemen"</span>,
+        <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"type002"</span>
+      },
+      <span class="text-slate-400">"badges"</span>: [<span class="text-amber-300">"Premium"</span>],
+      <span class="text-slate-400">"thumbnailUrl"</span>: <span class="text-amber-300">"https://ik.imagekit.io/.../thumbnail2.jpg"</span>,
+      <span class="text-slate-400">"imageUrl"</span>: [
+        <span class="text-amber-300">"https://ik.imagekit.io/.../image3.jpg"</span>
+      ],
+      <span class="text-slate-400">"bedrooms"</span>: <span class="text-teal-400">2</span>,
+      <span class="text-slate-400">"bathrooms"</span>: <span class="text-teal-400">1</span>,
+      <span class="text-slate-400">"area"</span>: <span class="text-teal-400">75</span>,
+      <span class="text-slate-400">"price"</span>: <span class="text-amber-300">"Rp 350.000.000"</span>,
+      <span class="text-slate-400">"priceValue"</span>: <span class="text-teal-400">350000000</span>,
+      <span class="text-slate-400">"status"</span>: <span class="text-amber-300">"published"</span>,
+      <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-02-10T08:15:00Z"</span>,
+      <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-18T16:45:00Z"</span>
+    }
+  ],
+  <span class="text-slate-400">"page"</span>: <span class="text-teal-400">1</span>,
+  <span class="text-slate-400">"limit"</span>: <span class="text-teal-400">10</span>,
+  <span class="text-slate-400">"nextPage"</span>: <span class="text-teal-400">2</span>,
+  <span class="text-slate-400">"prevPage"</span>: <span class="text-teal-400">null</span>
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- GET Properties Search -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties/search</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Cari properti. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Query Parameters:</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+<span class="text-slate-400">q</span>=<span class="text-amber-300">search term</span> <span class="text-slate-600">// wajib</span>
+<span class="text-slate-400">page</span>=<span class="text-amber-300">1</span> <span class="text-slate-600">// optional, default: 1</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties/search?q=rumah&page=1'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: [
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"prop001"</span>,
+      <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Rumah Minimalis Modern"</span>,
+      <span class="text-slate-400">"slug"</span>: <span class="text-amber-300">"rumah-minimalis-modern"</span>,
+      <span class="text-slate-400">"location"</span>: {
+        <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan"</span>,
+        <span class="text-slate-400">"locationsId"</span>: <span class="text-amber-300">"loc001"</span>
+      },
+      <span class="text-slate-400">"type"</span>: {
+        <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>,
+        <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"type001"</span>
+      },
+      <span class="text-slate-400">"badges"</span>: [<span class="text-amber-300">"New"</span>, <span class="text-amber-300">"Featured"</span>],
+      <span class="text-slate-400">"thumbnailUrl"</span>: <span class="text-amber-300">"https://ik.imagekit.io/.../thumbnail1.jpg"</span>,
+      <span class="text-slate-400">"imageUrl"</span>: [
+        <span class="text-amber-300">"https://ik.imagekit.io/.../image1.jpg"</span>
+      ],
+      <span class="text-slate-400">"bedrooms"</span>: <span class="text-teal-400">3</span>,
+      <span class="text-slate-400">"bathrooms"</span>: <span class="text-teal-400">2</span>,
+      <span class="text-slate-400">"area"</span>: <span class="text-teal-400">150</span>,
+      <span class="text-slate-400">"price"</span>: <span class="text-amber-300">"Rp 500.000.000"</span>,
+      <span class="text-slate-400">"priceValue"</span>: <span class="text-teal-400">500000000</span>,
+      <span class="text-slate-400">"status"</span>: <span class="text-amber-300">"published"</span>
+    }
+  ],
+  <span class="text-slate-400">"page"</span>: <span class="text-teal-400">1</span>,
+  <span class="text-slate-400">"limit"</span>: <span class="text-teal-400">10</span>
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- GET Property by ID -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Detail satu properti berdasarkan ID. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties/prop001'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"prop001"</span>,
+    <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Rumah Minimalis Modern"</span>,
+    <span class="text-slate-400">"slug"</span>: <span class="text-amber-300">"rumah-minimalis-modern"</span>,
+    <span class="text-slate-400">"content"</span>: <span class="text-amber-300">"Rumah minimalis modern dengan desain yang elegan dan nyaman. Terletak di lokasi strategis dengan akses mudah ke berbagai fasilitas umum."</span>,
+    <span class="text-slate-400">"location"</span>: {
+      <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan"</span>,
+      <span class="text-slate-400">"locationsId"</span>: <span class="text-amber-300">"loc001"</span>
+    },
+    <span class="text-slate-400">"type"</span>: {
+      <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>,
+      <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"type001"</span>
+    },
+    <span class="text-slate-400">"badges"</span>: [
+      <span class="text-amber-300">"New"</span>,
+      <span class="text-amber-300">"Featured"</span>
+    ],
+    <span class="text-slate-400">"thumbnailUrl"</span>: <span class="text-amber-300">"https://ik.imagekit.io/.../thumbnail1.jpg"</span>,
+    <span class="text-slate-400">"imageUrl"</span>: [
+      <span class="text-amber-300">"https://ik.imagekit.io/.../image1.jpg"</span>,
+      <span class="text-amber-300">"https://ik.imagekit.io/.../image2.jpg"</span>,
+      <span class="text-amber-300">"https://ik.imagekit.io/.../image3.jpg"</span>
+    ],
+    <span class="text-slate-400">"bedrooms"</span>: <span class="text-teal-400">3</span>,
+    <span class="text-slate-400">"bathrooms"</span>: <span class="text-teal-400">2</span>,
+    <span class="text-slate-400">"area"</span>: <span class="text-teal-400">150</span>,
+    <span class="text-slate-400">"price"</span>: <span class="text-amber-300">"Rp 500.000.000"</span>,
+    <span class="text-slate-400">"priceValue"</span>: <span class="text-teal-400">500000000</span>,
+    <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"type001"</span>,
+    <span class="text-slate-400">"status"</span>: <span class="text-amber-300">"published"</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-02-15T10:30:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-20T14:20:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- POST Create Property -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-post">POST</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Buat properti baru. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body:</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Rumah Minimalis"</span>,
+  <span class="text-slate-400">"slug"</span>: <span class="text-amber-300">"rumah-minimalis"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"location"</span>: {
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta"</span>,
+    <span class="text-slate-400">"locationsId"</span>: <span class="text-amber-300">"location123"</span>
+  },
+  <span class="text-slate-400">"type"</span>: {
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>,
+    <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"type123"</span>
+  },
+  <span class="text-slate-400">"badges"</span>: [<span class="text-amber-300">"badge1"</span>, <span class="text-amber-300">"badge2"</span>] <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"content"</span>: <span class="text-amber-300">"Deskripsi properti..."</span>,
+  <span class="text-slate-400">"thumbnailUrl"</span>: <span class="text-amber-300">"https://ik.imagekit.io/.../thumbnail.jpg"</span>,
+  <span class="text-slate-400">"imageUrl"</span>: [<span class="text-amber-300">"https://ik.imagekit.io/.../image1.jpg"</span>] <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"bedrooms"</span>: <span class="text-teal-400">3</span>,
+  <span class="text-slate-400">"bathrooms"</span>: <span class="text-teal-400">2</span>,
+  <span class="text-slate-400">"area"</span>: <span class="text-teal-400">150</span>,
+  <span class="text-slate-400">"price"</span>: <span class="text-amber-300">"Rp 500.000.000"</span>,
+  <span class="text-slate-400">"priceValue"</span>: <span class="text-teal-400">500000000</span>,
+  <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"type123"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"status"</span>: <span class="text-amber-300">"published"</span> <span class="text-slate-600">// optional: draft|published|archived</span>
+}
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"property123"</span>,
+    <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Rumah Minimalis"</span>,
+    ...
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- PATCH Update Property -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-patch">PATCH</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Update properti. Semua field optional. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body (semua field optional):</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Rumah Minimalis Updated"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"location"</span>: { ... } <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"type"</span>: { ... } <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"badges"</span>: [ ... ] <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"content"</span>: <span class="text-amber-300">"..."</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"thumbnailUrl"</span>: <span class="text-amber-300">"..."</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"imageUrl"</span>: [ ... ] <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"bedrooms"</span>: <span class="text-teal-400">4</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"bathrooms"</span>: <span class="text-teal-400">3</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"area"</span>: <span class="text-teal-400">200</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"price"</span>: <span class="text-amber-300">"Rp 600.000.000"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"priceValue"</span>: <span class="text-teal-400">600000000</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"status"</span>: <span class="text-amber-300">"published"</span> <span class="text-slate-600">// optional</span>
+}
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"property123"</span>,
+    ...
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- DELETE Property -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-delete">DELETE</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Hapus properti. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
+}
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -657,46 +1218,208 @@
                         <!-- Properties Type -->
                         <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800">
                             <h3 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Properties Type</h3>
-                            <div class="space-y-3 sm:space-y-4">
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-type</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Mendapatkan semua property types.</p>
+                            
+                            <!-- GET All Properties Type -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-type</code>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-type/:id</code>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan semua property types. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Mendapatkan property type berdasarkan ID.</p>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-post">POST</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-type</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Membuat property type baru.</p>
-                                    <div class="bg-slate-950 p-2 sm:p-3 rounded-lg mt-2 overflow-x-auto">
-                                        <pre class="text-emerald-400 text-xs">
-{<span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>, <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>}
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties-type'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
                                         </pre>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-patch">PATCH</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-type/:id</code>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Memperbarui property type.</p>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: [
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"type001"</span>,
+      <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>,
+      <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+      <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-15T10:00:00Z"</span>,
+      <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-10T14:30:00Z"</span>
+    },
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"type002"</span>,
+      <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Apartemen"</span>,
+      <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+      <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-20T09:15:00Z"</span>,
+      <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-12T11:20:00Z"</span>
+    }
+  ]
+}
+                                    </pre>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-delete">DELETE</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-type/:id</code>
+                            </div>
+
+                            <!-- GET Properties Type by ID -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-type/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan property type berdasarkan ID. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Menghapus property type.</p>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties-type/type001'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"type001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-15T10:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-10T14:30:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- POST Create Properties Type -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-post">POST</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-type</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Membuat property type baru. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body:</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>,
+  <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>
+}
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"type001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-02-21T10:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-21T10:00:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- PATCH Update Properties Type -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-patch">PATCH</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-type/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Memperbarui property type. Semua field optional. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body (semua field optional):</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah Updated"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">false</span> <span class="text-slate-600">// optional</span>
+}
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"type001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah Updated"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">false</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-15T10:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-21T15:30:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- DELETE Properties Type -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-delete">DELETE</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-type/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Menghapus property type. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
+}
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -704,41 +1427,208 @@
                         <!-- Properties Location -->
                         <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800">
                             <h3 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Properties Location</h3>
-                            <div class="space-y-3 sm:space-y-4">
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-location</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Mendapatkan semua property locations.</p>
+                            
+                            <!-- GET All Properties Location -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-location</code>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-location/:id</code>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan semua property locations. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Mendapatkan property location berdasarkan ID.</p>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties-location'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                        </pre>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-post">POST</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-location</code>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Membuat property location baru.</p>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: [
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"loc001"</span>,
+      <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan"</span>,
+      <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+      <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-10T08:00:00Z"</span>,
+      <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-05T12:15:00Z"</span>
+    },
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"loc002"</span>,
+      <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Pusat"</span>,
+      <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+      <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-12T09:30:00Z"</span>,
+      <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-08T10:45:00Z"</span>
+    }
+  ]
+}
+                                    </pre>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-patch">PATCH</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-location/:id</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Memperbarui property location.</p>
+                            </div>
+
+                            <!-- GET Properties Location by ID -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-location/:id</code>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-delete">DELETE</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-location/:id</code>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan property location berdasarkan ID. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Menghapus property location.</p>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties-location/loc001'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"loc001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-10T08:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-05T12:15:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- POST Create Properties Location -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-post">POST</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-location</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Membuat property location baru. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body:</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan"</span>,
+  <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>
+}
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"loc001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-02-21T10:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-21T10:00:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- PATCH Update Properties Location -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-patch">PATCH</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-location/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Memperbarui property location. Semua field optional. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body (semua field optional):</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan Updated"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">false</span> <span class="text-slate-600">// optional</span>
+}
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"loc001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta Selatan Updated"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">false</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-10T08:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-21T15:30:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- DELETE Properties Location -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-delete">DELETE</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-location/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Menghapus property location. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
+}
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -746,41 +1636,215 @@
                         <!-- Properties Badge -->
                         <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800">
                             <h3 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Properties Badge</h3>
-                            <div class="space-y-3 sm:space-y-4">
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-badge</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Mendapatkan semua property badges.</p>
+                            
+                            <!-- GET All Properties Badge -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-badge</code>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-get">GET</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-badge/:id</code>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan semua property badges. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Mendapatkan property badge berdasarkan ID.</p>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties-badge'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                        </pre>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-post">POST</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-badge</code>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Membuat property badge baru.</p>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: [
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"badge001"</span>,
+      <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"New"</span>,
+      <span class="text-slate-400">"color"</span>: <span class="text-amber-300">"#10b981"</span>,
+      <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+      <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-05T07:00:00Z"</span>,
+      <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-01T09:20:00Z"</span>
+    },
+    {
+      <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"badge002"</span>,
+      <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Featured"</span>,
+      <span class="text-slate-400">"color"</span>: <span class="text-amber-300">"#f59e0b"</span>,
+      <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+      <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-08T08:30:00Z"</span>,
+      <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-03T11:10:00Z"</span>
+    }
+  ]
+}
+                                    </pre>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-patch">PATCH</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-badge/:id</code>
-                                    </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Memperbarui property badge.</p>
+                            </div>
+
+                            <!-- GET Properties Badge by ID -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-get">GET</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-badge/:id</code>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                                        <span class="endpoint-method method-delete">DELETE</span>
-                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties-badge/:id</code>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan property badge berdasarkan ID. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
+                                    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-900 border-b border-slate-800">
+                                        <span class="text-xs text-slate-400">cURL</span>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyCurlCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
                                     </div>
-                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Menghapus property badge.</p>
+                                    <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
+                                        <pre class="text-slate-300 overflow-x-auto">
+<span class="text-teal-400">curl</span> --request GET \
+  --url <span class="text-amber-300">'https://your-api-domain.com/properties-badge/badge001'</span> \
+  --header <span class="text-amber-300">'x-api-secret: your-api-secret'</span>
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"badge001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"New"</span>,
+    <span class="text-slate-400">"color"</span>: <span class="text-amber-300">"#10b981"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-05T07:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-01T09:20:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- POST Create Properties Badge -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-post">POST</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-badge</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Membuat property badge baru. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body:</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"New"</span>,
+  <span class="text-slate-400">"color"</span>: <span class="text-amber-300">"#10b981"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>
+}
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"badge001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"New"</span>,
+    <span class="text-slate-400">"color"</span>: <span class="text-amber-300">"#10b981"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">true</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-02-21T10:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-21T10:00:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- PATCH Update Properties Badge -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-patch">PATCH</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-badge/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Memperbarui property badge. Semua field optional. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="mb-3 sm:mb-4">
+                                    <p class="text-xs sm:text-sm text-slate-500 mb-2">Request Body (semua field optional):</p>
+                                    <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs sm:text-sm">
+{
+  <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"New Updated"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"color"</span>: <span class="text-amber-300">"#3b82f6"</span> <span class="text-slate-600">// optional</span>,
+  <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">false</span> <span class="text-slate-600">// optional</span>
+}
+                                        </pre>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: {
+    <span class="text-slate-400">"id"</span>: <span class="text-amber-300">"badge001"</span>,
+    <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"New Updated"</span>,
+    <span class="text-slate-400">"color"</span>: <span class="text-amber-300">"#3b82f6"</span>,
+    <span class="text-slate-400">"isActive"</span>: <span class="text-teal-400">false</span>,
+    <span class="text-slate-400">"createdAt"</span>: <span class="text-amber-300">"2026-01-05T07:00:00Z"</span>,
+    <span class="text-slate-400">"updatedAt"</span>: <span class="text-amber-300">"2026-02-21T15:30:00Z"</span>
+  }
+}
+                                    </pre>
+                                </div>
+                            </div>
+
+                            <!-- DELETE Properties Badge -->
+                            <div class="mb-6 sm:mb-8">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                                    <span class="endpoint-method method-delete">DELETE</span>
+                                    <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/properties-badge/:id</code>
+                                </div>
+                                <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Menghapus property badge. Memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>.</p>
+                                
+                                <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="text-xs text-slate-500 uppercase">Response</p>
+                                        <button class="text-slate-400 hover:text-white transition-colors" onclick="copyResponseCode(this)">
+                                            <iconify-icon icon="lucide:copy" class="text-base sm:text-lg"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"ok"</span>: <span class="text-teal-400">true</span>
+}
+                                    </pre>
                                 </div>
                             </div>
                         </div>
