@@ -295,6 +295,7 @@
                             <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/health</code>
                         </div>
                         <p class="text-sm sm:text-base text-slate-400 mb-4 sm:mb-6">Endpoint untuk memeriksa status API. Tidak memerlukan autentikasi.</p>
+                        <p class="text-xs text-slate-500 mb-3">Dokumentasi ini dilayani di <code class="bg-slate-950 px-1 rounded text-teal-400">GET /docs</code>.</p>
                         
                         <div class="code-block rounded-xl overflow-hidden mb-3 sm:mb-4">
                             <div class="p-3 sm:p-4 font-mono text-xs sm:text-sm">
@@ -408,6 +409,11 @@
                             <code class="text-white font-mono text-xs sm:text-sm break-all block mt-1">/auth/change-password</code>
                             <p class="text-slate-400 text-xs sm:text-sm mt-2">Mengubah password. Memerlukan autentikasi.</p>
                         </div>
+                        <div class="bg-slate-800/50 p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="endpoint-method method-delete">DELETE</span>
+                            <code class="text-white font-mono text-xs sm:text-sm break-all block mt-1">/auth/delete-account</code>
+                            <p class="text-slate-400 text-xs sm:text-sm mt-2">Menghapus akun pengguna (Firestore + Firebase Auth). Memerlukan autentikasi.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -440,7 +446,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800">
+                    <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800 mb-4 sm:mb-6">
                         <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                             <span class="endpoint-method method-patch">PATCH</span>
                             <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/me</code>
@@ -458,6 +464,30 @@
 }
                                 </pre>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800">
+                        <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+                            <span class="endpoint-method method-get">GET</span>
+                            <code class="text-white font-mono text-sm sm:text-base lg:text-lg break-all">/accounts</code>
+                        </div>
+                        <p class="text-sm sm:text-base text-slate-400 mb-3 sm:mb-4">Mendapatkan daftar semua akun. Memerlukan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code> (bukan session).</p>
+                        <div class="mb-3 sm:mb-4">
+                            <p class="text-xs sm:text-sm text-slate-500 mb-2">Headers:</p>
+                            <div class="bg-slate-950 p-3 sm:p-4 rounded-xl overflow-x-auto">
+                                <pre class="text-emerald-400 text-xs sm:text-sm"><span class="text-slate-400">x-api-secret</span>: <span class="text-amber-300">your-api-secret</span></pre>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950 p-3 sm:p-4 rounded-xl">
+                            <p class="text-xs text-slate-500 uppercase mb-2">Response</p>
+                            <pre class="text-emerald-400 text-xs sm:text-sm overflow-x-auto">
+{
+  <span class="text-slate-400">"data"</span>: [
+    { <span class="text-slate-400">"uid"</span>, <span class="text-slate-400">"email"</span>, <span class="text-slate-400">"displayName"</span>, <span class="text-slate-400">"phoneNumber"</span>, <span class="text-slate-400">"photoURL"</span>, <span class="text-slate-400">"role"</span>, <span class="text-slate-400">"createdAt"</span>, <span class="text-slate-400">"updatedAt"</span> }
+  ]
+}
+                            </pre>
                         </div>
                     </div>
                 </section>
@@ -553,9 +583,77 @@
                         <h2 class="text-2xl sm:text-3xl font-bold text-white font-display">Properties Endpoints</h2>
                     </div>
 
-                    <p class="text-sm sm:text-base text-slate-400 mb-6 sm:mb-8">Semua endpoints properties memerlukan autentikasi. Tersedia tiga jenis: Type, Location, dan Badge.</p>
+                    <p class="text-sm sm:text-base text-slate-400 mb-6 sm:mb-8">Semua endpoints properties memerlukan autentikasi dan header <code class="bg-slate-950 px-1.5 py-0.5 rounded text-teal-400 text-xs">x-api-secret</code>. Ada CRUD untuk properti utama plus referensi: Type, Location, dan Badge.</p>
 
                     <div class="space-y-4 sm:space-y-6">
+                        <!-- Properties (Main CRUD) -->
+                        <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800">
+                            <h3 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Properties (Properti Utama)</h3>
+                            <div class="space-y-3 sm:space-y-4">
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="endpoint-method method-post">POST</span>
+                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/upload/thumbnail</code>
+                                    </div>
+                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Upload thumbnail gambar ke ImageKit. Multipart <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">file</code>. Maks 5MB. Butuh x-api-secret + auth.</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="endpoint-method method-post">POST</span>
+                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/upload/image</code>
+                                    </div>
+                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Upload gambar properti ke ImageKit. Multipart <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">file</code>. Maks 5MB. Butuh x-api-secret + auth.</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="endpoint-method method-get">GET</span>
+                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties</code>
+                                    </div>
+                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Daftar properti (paginated). Query: <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">page</code> (optional). Response: data, page, limit, nextPage, prevPage.</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="endpoint-method method-get">GET</span>
+                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/search</code>
+                                    </div>
+                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Cari properti. Query: <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">q</code> (wajib), <code class="bg-slate-950 px-1 rounded text-teal-400 text-xs">page</code> (optional).</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="endpoint-method method-get">GET</span>
+                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/:id</code>
+                                    </div>
+                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Detail satu properti berdasarkan ID.</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="endpoint-method method-post">POST</span>
+                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties</code>
+                                    </div>
+                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Buat properti baru. Body: title, slug (optional), location { name, locationsId }, type { name, propertiesTypeId }, badges (optional), content, thumbnailUrl, imageUrl (optional), bedrooms, bathrooms, area, price, priceValue, propertiesTypeId (optional), status (optional: draft|published|archived).</p>
+                                    <div class="bg-slate-950 p-2 sm:p-3 rounded-lg mt-2 overflow-x-auto">
+                                        <pre class="text-emerald-400 text-xs">
+{ <span class="text-slate-400">"title"</span>: <span class="text-amber-300">"Rumah Minimalis"</span>, <span class="text-slate-400">"location"</span>: { <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Jakarta"</span>, <span class="text-slate-400">"locationsId"</span>: <span class="text-amber-300">"id"</span> }, <span class="text-slate-400">"type"</span>: { <span class="text-slate-400">"name"</span>: <span class="text-amber-300">"Rumah"</span>, <span class="text-slate-400">"propertiesTypeId"</span>: <span class="text-amber-300">"id"</span> }, <span class="text-slate-400">"content"</span>: <span class="text-amber-300">"..."</span>, <span class="text-slate-400">"thumbnailUrl"</span>, <span class="text-slate-400">"bedrooms"</span>, <span class="text-slate-400">"bathrooms"</span>, <span class="text-slate-400">"area"</span>, <span class="text-slate-400">"price"</span>, <span class="text-slate-400">"priceValue"</span> }
+                                        </pre>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="endpoint-method method-patch">PATCH</span>
+                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/:id</code>
+                                    </div>
+                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Update properti. Semua field optional (title, location, type, badges, content, thumbnailUrl, imageUrl, bedrooms, bathrooms, area, price, priceValue, status).</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="endpoint-method method-delete">DELETE</span>
+                                        <code class="text-white font-mono text-xs sm:text-sm break-all">/properties/:id</code>
+                                    </div>
+                                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Hapus properti.</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Properties Type -->
                         <div class="bg-slate-800/50 p-4 sm:p-6 rounded-2xl border border-slate-800">
                             <h3 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Properties Type</h3>

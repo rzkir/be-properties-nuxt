@@ -7,6 +7,7 @@ import admin from "firebase-admin";
 import { z } from "zod";
 
 import { requireAuth, getUser } from "../middleware/auth.js";
+
 import { requireApiSecret } from "../middleware/apiSecret.js";
 
 import imagekit from "../imgkit.js";
@@ -123,7 +124,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string; apiSec
         }
 
         const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_");
-        
+
         try {
           const result = await imagekit.upload({
             file: file.buffer,
@@ -140,9 +141,9 @@ export function createPropertiesRouter(opts: { sessionCookieName: string; apiSec
           });
         } catch (err: any) {
           console.error("[BE] ImageKit upload error:", err);
-          return res.status(500).json({ 
+          return res.status(500).json({
             message: "Failed to upload thumbnail to ImageKit",
-            error: err.message 
+            error: err.message
           });
         }
       } catch (error: any) {
@@ -166,7 +167,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string; apiSec
         }
 
         const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_");
-        
+
         try {
           const result = await imagekit.upload({
             file: file.buffer,
@@ -183,9 +184,9 @@ export function createPropertiesRouter(opts: { sessionCookieName: string; apiSec
           });
         } catch (err: any) {
           console.error("[BE] ImageKit upload error:", err);
-          return res.status(500).json({ 
+          return res.status(500).json({
             message: "Failed to upload image to ImageKit",
-            error: err.message 
+            error: err.message
           });
         }
       } catch (error: any) {
@@ -195,26 +196,113 @@ export function createPropertiesRouter(opts: { sessionCookieName: string; apiSec
     },
   );
 
-  // GET /properties - List all properties
+  const mapDocToList = (doc: { id: string; data: () => Record<string, unknown> }) => {
+    const raw = doc.data() as any;
+    return {
+      id: doc.id,
+      title: raw.title,
+      slug: raw.slug,
+      location: raw.location,
+      propertiesTypeId: raw.propertiesTypeId,
+      type: raw.type,
+      badges: raw.badges,
+      thumbnailUrl: raw.thumbnailUrl,
+      bedrooms: raw.bedrooms,
+      bathrooms: raw.bathrooms,
+      area: raw.area,
+      price: raw.price,
+      priceValue: raw.priceValue,
+    };
+  };
+
+  // GET /properties - List all properties (query: page)
   router.get(
     "/",
     requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
-        const snapshot = await propertiesCollection()
-          .orderBy("createdAt", "desc")
-          .get();
+        const limit = 10;
+        const pageParam = Array.isArray(req.query.page) ? req.query.page[0] : req.query.page;
+        const page = pageParam ? Math.max(parseInt(pageParam as string, 10) || 1, 1) : 1;
 
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        let query = propertiesCollection().orderBy("createdAt", "desc").limit(limit + 1);
+        const offset = (page - 1) * limit;
+        if (offset > 0) {
+          query = query.offset(offset);
+        }
+        const snapshot = await query.get();
+        const hasNextPage = snapshot.docs.length > limit;
+        const docs = snapshot.docs.slice(0, limit);
+        const data = docs.map(mapDocToList);
 
-        return res.json({ data });
+        return res.json({
+          data,
+          page,
+          limit,
+          nextPage: hasNextPage,
+          prevPage: page > 1,
+        });
       } catch (error: any) {
         console.error("[BE] GET /properties error:", error);
         return res.status(500).json({ message: "Failed to fetch properties" });
+      }
+    },
+  );
+
+  // GET /properties/search - Search properties (query: q, page)
+  router.get(
+    "/search",
+    requireApi,
+    requireAuth({ sessionCookieName: opts.sessionCookieName }),
+    async (req, res) => {
+      try {
+        const limit = 10;
+        const pageParam = Array.isArray(req.query.page) ? req.query.page[0] : req.query.page;
+        const page = pageParam ? Math.max(parseInt(pageParam as string, 10) || 1, 1) : 1;
+        const qParam = Array.isArray(req.query.q) ? req.query.q[0] : req.query.q;
+        const q = typeof qParam === "string" ? qParam.trim() : "";
+
+        if (!q) {
+          return res.status(400).json({ message: "Query parameter 'q' is required for search" });
+        }
+
+        const searchLower = q.toLowerCase();
+        const maxScan = 500;
+        const snapshot = await propertiesCollection()
+          .orderBy("createdAt", "desc")
+          .limit(maxScan)
+          .get();
+
+        const filtered = snapshot.docs.filter((doc) => {
+          const raw = doc.data() as any;
+          const title = (raw.title ?? "").toLowerCase();
+          const slug = (raw.slug ?? "").toLowerCase();
+          const locName = (raw.location?.name ?? "").toLowerCase();
+          return (
+            title.includes(searchLower) ||
+            slug.includes(searchLower) ||
+            locName.includes(searchLower)
+          );
+        });
+
+        const totalFiltered = filtered.length;
+        const offset = (page - 1) * limit;
+        const docs = filtered.slice(offset, offset + limit);
+        const data = docs.map((d) => mapDocToList(d));
+        const hasNextPage = offset + limit < totalFiltered;
+        const prevPage = page > 1;
+
+        return res.json({
+          data,
+          page,
+          limit,
+          nextPage: hasNextPage,
+          prevPage,
+        });
+      } catch (error: any) {
+        console.error("[BE] GET /properties/search error:", error);
+        return res.status(500).json({ message: "Failed to search properties" });
       }
     },
   );
