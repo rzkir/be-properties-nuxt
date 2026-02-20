@@ -245,7 +245,8 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
         displayName: userRecord.displayName ?? "",
         email: userRecord.email ?? "",
         phoneNumber: userRecord.phoneNumber ?? "",
-        photoURL: userRecord.photoURL ?? undefined,
+        // Pastikan tidak pernah mengirim undefined ke Firestore
+        photoURL: userRecord.photoURL ?? "",
       };
     } catch {
       return null;
