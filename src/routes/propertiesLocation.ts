@@ -5,8 +5,9 @@ import admin from "firebase-admin";
 import { z } from "zod";
 
 import { requireAuth, getUser } from "../middleware/auth.js";
+import { requireApiSecret } from "../middleware/apiSecret.js";
 
-export function createPropertiesLocationRouter(opts: { sessionCookieName: string }) {
+export function createPropertiesLocationRouter(opts: { sessionCookieName: string; apiSecret?: string }) {
   const router = Router();
 
   const CreateSchema = z.object({
@@ -21,6 +22,8 @@ export function createPropertiesLocationRouter(opts: { sessionCookieName: string
     isActive: z.boolean().optional(),
   });
 
+  const requireApi = requireApiSecret(opts.apiSecret);
+
   function propertiesLocationCollection() {
     return admin.firestore().collection(process.env.FIREBASE_COLLECTION_PROPERTIES_LOCATION as string);
   }
@@ -32,6 +35,7 @@ export function createPropertiesLocationRouter(opts: { sessionCookieName: string
   // GET /properties-location - List all property locations
   router.get(
     "/",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -55,6 +59,7 @@ export function createPropertiesLocationRouter(opts: { sessionCookieName: string
   // GET /properties-location/:id - Get single property location
   router.get(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -79,6 +84,7 @@ export function createPropertiesLocationRouter(opts: { sessionCookieName: string
   // POST /properties-location - Create new property location
   router.post(
     "/",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -116,6 +122,7 @@ export function createPropertiesLocationRouter(opts: { sessionCookieName: string
   // PATCH /properties-location/:id - Update property location
   router.patch(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -157,6 +164,7 @@ export function createPropertiesLocationRouter(opts: { sessionCookieName: string
   // DELETE /properties-location/:id - Delete property location
   router.delete(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {

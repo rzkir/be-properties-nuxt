@@ -5,8 +5,9 @@ import admin from "firebase-admin";
 import { z } from "zod";
 
 import { requireAuth, getUser } from "../middleware/auth.js";
+import { requireApiSecret } from "../middleware/apiSecret.js";
 
-export function createPropertiesBadgeRouter(opts: { sessionCookieName: string }) {
+export function createPropertiesBadgeRouter(opts: { sessionCookieName: string; apiSecret?: string }) {
   const router = Router();
 
   const CreateSchema = z.object({
@@ -21,6 +22,8 @@ export function createPropertiesBadgeRouter(opts: { sessionCookieName: string })
     isActive: z.boolean().optional(),
   });
 
+  const requireApi = requireApiSecret(opts.apiSecret);
+
   function propertiesBadgeCollection() {
     return admin.firestore().collection(process.env.FIREBASE_COLLECTION_PROPERTIES_BADGE as string);
   }
@@ -32,6 +35,7 @@ export function createPropertiesBadgeRouter(opts: { sessionCookieName: string })
   // GET /properties-badge - List all property badges
   router.get(
     "/",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -55,6 +59,7 @@ export function createPropertiesBadgeRouter(opts: { sessionCookieName: string })
   // GET /properties-badge/:id - Get single property badge
   router.get(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -79,6 +84,7 @@ export function createPropertiesBadgeRouter(opts: { sessionCookieName: string })
   // POST /properties-badge - Create new property badge
   router.post(
     "/",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -116,6 +122,7 @@ export function createPropertiesBadgeRouter(opts: { sessionCookieName: string })
   // PATCH /properties-badge/:id - Update property badge
   router.patch(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -157,6 +164,7 @@ export function createPropertiesBadgeRouter(opts: { sessionCookieName: string })
   // DELETE /properties-badge/:id - Delete property badge
   router.delete(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {

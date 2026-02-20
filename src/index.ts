@@ -72,13 +72,37 @@ app.use(
       env.COOKIE_SECURE ?? (env.NODE_ENV === "production"),
   }),
 );
-app.use(createAccountsRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
+app.use(createAccountsRouter({ sessionCookieName: env.SESSION_COOKIE_NAME, apiSecret: env.API_SECRET }));
 app.use(createUploadRouter({ apiSecret: env.API_SECRET }));
 app.use(createImagekitRouter({ privateKey: env.IMAGEKIT_PRIVATE_KEY }));
-app.use("/properties-type", createPropertiesTypeRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
-app.use("/properties-location", createPropertiesLocationRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
-app.use("/properties-badge", createPropertiesBadgeRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
-app.use("/properties", createPropertiesRouter({ sessionCookieName: env.SESSION_COOKIE_NAME }));
+app.use(
+  "/properties-type",
+  createPropertiesTypeRouter({
+    sessionCookieName: env.SESSION_COOKIE_NAME,
+    apiSecret: env.API_SECRET,
+  }),
+);
+app.use(
+  "/properties-location",
+  createPropertiesLocationRouter({
+    sessionCookieName: env.SESSION_COOKIE_NAME,
+    apiSecret: env.API_SECRET,
+  }),
+);
+app.use(
+  "/properties-badge",
+  createPropertiesBadgeRouter({
+    sessionCookieName: env.SESSION_COOKIE_NAME,
+    apiSecret: env.API_SECRET,
+  }),
+);
+app.use(
+  "/properties",
+  createPropertiesRouter({
+    sessionCookieName: env.SESSION_COOKIE_NAME,
+    apiSecret: env.API_SECRET,
+  }),
+);
 
 // Only start server if not in Vercel environment
 if (process.env.VERCEL !== "1") {

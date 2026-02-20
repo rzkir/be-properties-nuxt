@@ -5,8 +5,9 @@ import admin from "firebase-admin";
 import { z } from "zod";
 
 import { requireAuth, getUser } from "../middleware/auth.js";
+import { requireApiSecret } from "../middleware/apiSecret.js";
 
-export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) {
+export function createPropertiesTypeRouter(opts: { sessionCookieName: string; apiSecret?: string }) {
   const router = Router();
 
   const CreateSchema = z.object({
@@ -21,6 +22,8 @@ export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) 
     isActive: z.boolean().optional(),
   });
 
+  const requireApi = requireApiSecret(opts.apiSecret);
+
   function propertiesTypeCollection() {
     return admin.firestore().collection(process.env.FIREBASE_COLLECTION_PROPERTIES_TYPE as string);
   }
@@ -32,6 +35,7 @@ export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) 
   // GET /properties-type - List all property types
   router.get(
     "/",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -55,6 +59,7 @@ export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) 
   // GET /properties-type/:id - Get single property type
   router.get(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -79,6 +84,7 @@ export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) 
   // POST /properties-type - Create new property type
   router.post(
     "/",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -116,6 +122,7 @@ export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) 
   // PATCH /properties-type/:id - Update property type
   router.patch(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -157,6 +164,7 @@ export function createPropertiesTypeRouter(opts: { sessionCookieName: string }) 
   // DELETE /properties-type/:id - Delete property type
   router.delete(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {

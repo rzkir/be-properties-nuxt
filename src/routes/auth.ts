@@ -242,15 +242,23 @@ export function createAuthRouter(opts: {
   router.get("/auth/me", requireSessionAuth(opts.cookieName), async (req, res) => {
     const u = getUser(req);
     const authUser = await admin.auth().getUser(u.uid);
-    const accSnap = await admin.firestore().collection(process.env.FIREBASE_COLLECTION_ACCOUNTS as string).doc(u.uid).get();
+    const accSnap = await admin
+      .firestore()
+      .collection(process.env.FIREBASE_COLLECTION_ACCOUNTS as string)
+      .doc(u.uid)
+      .get();
     const acc = accSnap.exists ? accSnap.data() : null;
+
     return res.json({
       data: {
         uid: u.uid,
         email: authUser.email ?? null,
-        displayName: authUser.displayName ?? null,
-        phoneNumber: authUser.phoneNumber ?? null,
-        photoURL: authUser.photoURL ?? null,
+        displayName: authUser.displayName ?? (acc as any)?.displayName ?? null,
+        phoneNumber:
+          (acc as any)?.phoneNumber ??
+          authUser.phoneNumber ??
+          null,
+        photoURL: authUser.photoURL ?? (acc as any)?.photoURL ?? null,
         role: (acc as any)?.role ?? "user",
       },
     });

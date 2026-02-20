@@ -7,10 +7,11 @@ import admin from "firebase-admin";
 import { z } from "zod";
 
 import { requireAuth, getUser } from "../middleware/auth.js";
+import { requireApiSecret } from "../middleware/apiSecret.js";
 
 import imagekit from "../imgkit.js";
 
-export function createPropertiesRouter(opts: { sessionCookieName: string }) {
+export function createPropertiesRouter(opts: { sessionCookieName: string; apiSecret?: string }) {
   const router = Router();
 
   // Multer configuration for file uploads
@@ -106,9 +107,12 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
     return propertiesCollection().doc(id);
   }
 
+  const requireApi = requireApiSecret(opts.apiSecret);
+
   // POST /properties/upload/thumbnail - Upload thumbnail to ImageKit
   router.post(
     "/upload/thumbnail",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     upload.single("file"),
     async (req, res) => {
@@ -151,6 +155,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
   // POST /properties/upload/image - Upload image to ImageKit
   router.post(
     "/upload/image",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     upload.single("file"),
     async (req, res) => {
@@ -193,6 +198,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
   // GET /properties - List all properties
   router.get(
     "/",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -216,6 +222,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
   // GET /properties/:id - Get single property
   router.get(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -256,6 +263,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
   // POST /properties - Create new property
   router.post(
     "/",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -301,6 +309,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
   // PATCH /properties/:id - Update property
   router.patch(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
@@ -350,6 +359,7 @@ export function createPropertiesRouter(opts: { sessionCookieName: string }) {
   // DELETE /properties/:id - Delete property
   router.delete(
     "/:id",
+    requireApi,
     requireAuth({ sessionCookieName: opts.sessionCookieName }),
     async (req, res) => {
       try {
